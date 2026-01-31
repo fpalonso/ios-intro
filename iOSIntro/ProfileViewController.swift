@@ -23,22 +23,10 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var hideButton: UIButton!
     
     private var isPhoneVisible: Bool! {
-        willSet {
-            profilePictureView.image = newValue
-            ? ProfileViewController.profilePicture
-            : ProfileViewController.hiddenProfilePicture
-            
-            phoneLabel.text = newValue 
-            ? ProfileViewController.phoneNumber
-            : ProfileViewController.hiddenPhoneNumber
-            
-            hideButton
-                .setTitle(
-                    newValue
-                    ? ProfileViewController.hideButtonTitle
-                    : ProfileViewController.showButtonTitle,
-                    for: .normal
-                )
+        didSet {
+            updateProfilePicture()
+            updatePhoneLabel()
+            updateHideButton()
         }
     }
     
@@ -50,5 +38,27 @@ class ProfileViewController: UIViewController {
     
     @IBAction func onHideButtonClick(_ sender: UIButton) {
         isPhoneVisible.toggle()
+    }
+    
+    private func updateProfilePicture() {
+        profilePictureView.image = isPhoneVisible
+        ? ProfileViewController.profilePicture
+        : ProfileViewController.hiddenProfilePicture
+    }
+    
+    private func updatePhoneLabel() {
+        phoneLabel.text = isPhoneVisible
+        ? ProfileViewController.phoneNumber
+        : ProfileViewController.hiddenPhoneNumber
+    }
+    
+    private func updateHideButton() {
+        hideButton
+            .setTitle(
+                isPhoneVisible
+                ? ProfileViewController.hideButtonTitle
+                : ProfileViewController.showButtonTitle,
+                for: .normal
+            )
     }
 }
